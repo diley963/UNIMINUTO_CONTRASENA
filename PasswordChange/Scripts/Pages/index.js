@@ -58,12 +58,12 @@ function SendData() {
                         //alternativeEmail.value = data.filtro.alternativeEmail;
                         //mobile.value = data.filtro.mobile;
                         //CAMBIO 
-                        alternativeEmail.value = utf8_to_b64(data.filtro.alternativeEmail);
-                        mobile.value = utf8_to_b64(data.filtro.mobile);
-                        nombre.value = data.filtro.nombre;
-                        apellido.value = data.filtro.apellido;
-                        nDocument.value = data.filtro.nDocument;
-                        descripcion.value = data.filtro.descripcion;
+                        //alternativeEmail.value = utf8_to_b64(data.filtro.alternativeEmail);
+                        //mobile.value = utf8_to_b64(data.filtro.mobile);
+                        //nombre.value = data.filtro.nombre;
+                        //apellido.value = data.filtro.apellido;
+                        //nDocument.value = data.filtro.nDocument;
+                        //descripcion.value = data.filtro.descripcion;
                         document.getElementById("idFormIndex").submit();
                     } else {
                         ShowMessageFail(data.messageReply)

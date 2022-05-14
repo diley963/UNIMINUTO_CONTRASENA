@@ -30,26 +30,23 @@ function SendDataCode() {
         ShowMessageFail("No puede haber campos vacíos ingrese un código");
         return;
     } else {
+        let codigo= code.value;
         //missingAttempts += 1;
-        var frm = new FormData();
-        frm.append("code", code.value);
-       // frm.append("missingAttempts", missingAttempts);
-        frm.append("cedula", document.getElementById("nDocument").value);
-        frm.append("email", document.getElementById("email").value);
-        frm.append("nombre", document.getElementById("nombre").value);
-        frm.append("apellido", document.getElementById("apellido").value);
+       // var frm = new FormData();
+       // frm.append("code", code.value);
+       //// frm.append("missingAttempts", missingAttempts);
+       // frm.append("cedula", document.getElementById("nDocument").value);
+       // frm.append("email", document.getElementById("email").value);
+       // frm.append("nombre", document.getElementById("nombre").value);
+       // frm.append("apellido", document.getElementById("apellido").value);
         //Enviamos la Informacion al Controlador
 
         $.ajax({
-
             type: 'POST',
             url: 'CodeIsValid',
-            data: frm,
-            contentType: false,
-            processData: false,
+            dataType: 'json',
+            data: { code: codigo },
             success: function (data) {
-
-                //if the process is successful we show the hidden form for password change
                 if (data.response == 1) {
 
                     $("#divConfirmacionContrasena").css("display", "block");
@@ -73,7 +70,7 @@ function SendDataCode() {
                         var MensajeExitPage;
                         if (data.response == -2) {
                             statuscode = 600;
-                           // MensajeExitPage = "Este código ya fue utilizado por favor solicite un código nuevo";
+                            // MensajeExitPage = "Este código ya fue utilizado por favor solicite un código nuevo";
                             MensajeExitPage = data.messageReply;
                             window.location.href = "/Home/ExitPage/?code=" + statuscode + "&mensaje=" + MensajeExitPage
                         }
@@ -92,10 +89,16 @@ function SendDataCode() {
                         }
 
                     }
-
-            }
+            },
+            error: function (e) {
+                alert(e.statusText);
+                //Swal.fire("Señor(a) Usuario(a)", "Fallo al traer los registros", "error");
+            },
 
         });
+
+
+        
 
     }
 
@@ -152,16 +155,18 @@ btnChangePassword.onclick = function () {
                 //code = 200;
                 //ShowMessageOk("Clave Cambiada con exito");
                 //setTimeout(function () { window.location.href = "/Home/ExitPage/?code=" + code + "&mensaje=" + MensajeExitPage }, 5000);
-                var frm = new FormData();
-                frm.append("password", inputPassword.value)
-                frm.append("email", document.getElementById("email").value)
-                frm.append("nDocument", document.getElementById("nDocument").value)
+                //var frm = new FormData();
+                //frm.append("password", inputPassword.value)
+                //frm.append("email", document.getElementById("email").value)
+                //frm.append("nDocument", document.getElementById("nDocument").value)
+
+                let password = inputPassword.value;
 
                 $.ajax({
 
                     type: 'POST',
                     url: 'IsUpdatePassword',
-                    data: frm,
+                    data: password,
                     contentType: false,
                     processData: false,
                     success: function (data) {

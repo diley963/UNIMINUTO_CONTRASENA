@@ -1,5 +1,6 @@
-﻿@model PasswordChange.Models.User
+﻿@*@model PasswordChange.Models.User*@
 @{
+    var usuario = (PasswordChange.Models.User)Session["DataUser"];
     ViewBag.Title = "Contact";
     Layout = "~/Views/Shared/_LayoutTemplate2.cshtml";
 }
@@ -18,10 +19,10 @@
 
         @Html.Hidden("attemps", null, new { value = ViewBag.attempts })
         @Html.Hidden("retry_change_pass_minutes", null, new { value = ViewBag.retry_change_pass_minutes })
-        @Html.HiddenFor(M => M.nDocument)
+        @*@Html.HiddenFor(M => M.nDocument)
         @Html.HiddenFor(m => m.email)
         @Html.HiddenFor(m => m.nombre)
-        @Html.HiddenFor(m => m.apellido)
+        @Html.HiddenFor(m => m.apellido)*@
 
 
         @*@Html.Hidden("missingAttempts", null, new { value = 0 })*@
@@ -33,7 +34,7 @@
                             <div class="form-container">
                                 <div class="form-content">
 
-                                    <h1 class=""> @Model.nombre @Model.apellido</h1>
+                                    <h1 class=""> @usuario.nombre @usuario.apellido</h1>
                                     <p class="">Digita el código que fue enviado a su email o teléfono.</p>
 
                                     @using (Html.BeginForm("CodeIsValid", "Home", FormMethod.Post, new { @class = "text-left" }))
@@ -69,7 +70,7 @@
                             <div class="form-container">
                                 <div class="form-content">
 
-                                    <h1 class="">@Model.nombre</h1>
+                                    <h1 class="">@usuario.nombre</h1>
                                     <p class="">Ingrese su nueva contraseña teniendo en cuenta que debe tener <span> por lo menos 1
                                         carácter especial y  por lo menos 1 letra  mayúscula , longitud mínima de 8 caracteres,  
                                         no contener su nombre o apellidos </span>.</p>

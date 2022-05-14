@@ -59,6 +59,8 @@ namespace PasswordChange.Controllers
         /// <returns>returns User Information</returns>
         public ActionResult FormMethodOfShipment(User user)
         {
+            user = (User)Session["DataUser"];
+
             //We verify that if the user arrives null it is redirected to an exit view.
             if (user.nDocument == null)
             {
@@ -94,13 +96,13 @@ namespace PasswordChange.Controllers
             ViewBag.mobileReplace = "Indefinido";
             ViewBag.emailReplace = "Indefinido";
 
-            //string number = user.mobile;
-            //string email = user.alternativeEmail;
-            
-            //CAMBIO 
-            string email = decryptBase64(user.alternativeEmail);
-            string number = decryptBase64(user.mobile);
-            
+            string number = user.mobile;
+            string email = user.alternativeEmail;
+
+            ////CAMBIO 
+            //string email = decryptBase64(user.alternativeEmail);
+            //string number = decryptBase64(user.mobile);
+
             if (!string.IsNullOrEmpty(number))
             {
                 ViewBag.mobileReplace = number.Replace(number.Substring(number.Length - 4), "****");
@@ -113,7 +115,7 @@ namespace PasswordChange.Controllers
                 ViewBag.emailReplace = email1 + "@" + splitemail[1];
             }
 
-            return View(user);
+            return View();
         }
 
         [Seguridad]
@@ -123,6 +125,7 @@ namespace PasswordChange.Controllers
         /// <returns></returns>
         public ActionResult CodeConfirmationForm(User user)
         {
+            user = (User)Session["DataUser"];
             ViewBag.attemps = attemps;
             ViewBag.retry_change_pass_minutes = retry_change_pass_minutes;
             if (user.nDocument == null)
@@ -133,7 +136,7 @@ namespace PasswordChange.Controllers
                     mensaje = "Para acceder a esta página debe ingresar sus datos personales en la página de inicio "
                 });
             }
-            return View(user);
+            return View();
         }
 
         /// <summary>
@@ -158,9 +161,14 @@ namespace PasswordChange.Controllers
         /// </summary>
         /// <param name="code"></param>
         /// <returns>1 if it is valid and 0 if it is not valid</returns>
-        public JsonResult CodeIsValid(int code, /*int missingAttempts,*/ UserLocked userLocked)
+        public JsonResult CodeIsValid(int code /*int missingAttempts,*/ /*UserLocked userLocked*/)
         {
-
+            User user = (User)Session["DataUser"];
+            UserLocked userLocked = new UserLocked()
+            {
+                cedula = user.nDocument,
+                email = user.email
+            };
             string messageReply = string.Empty;
             int response = 0;
             int missingAttempts = 0;
@@ -244,16 +252,17 @@ namespace PasswordChange.Controllers
         /// <summary>
         /// Method for sending code either by phone or mail
         /// </summary>
-        /// <param name="SendMethod">if 1 is 1 it is sent by phone if 2 it is 2 it is sent by email</param>
-        /// <returns>returns true if the message could be sent and false if it could not.</returns>
-
-        public JsonResult SendCode(string SendMethod, User user)
+        /// <param name="metodo">if 1 is 1 it is sent by phone if 2 it is 2 it is sent by email</param>
+        /// <returns>returns true if the message could be sent and false if it could not.</returns>        
+        public JsonResult SendCode(string metodo)
         {
+
+            User user = (User)Session["DataUser"];
             string messageReply = "";
             //flag indicating whether the code has been sent or not
             bool isSend = false;
 
-            if (SendMethod.Equals("tengoCodigo"))
+            if (metodo.Equals("tengoCodigo"))
             {
                 isSend = true;
                 messageReply = "tengoCodigo";
@@ -306,7 +315,7 @@ namespace PasswordChange.Controllers
 
 
 
-            if (SendMethod.Equals("mobile")/*==1*/)
+            if (metodo.Equals("mobile")/*==1*/)
             {
                 //validate that if the message is sent by mobile the number is not empty
                 if (!String.IsNullOrEmpty(user.mobile))
@@ -364,7 +373,7 @@ namespace PasswordChange.Controllers
                 }
 
             }
-            else if (SendMethod.Equals("email") /*== 2*/)
+            else if (metodo.Equals("email") /*== 2*/)
             {
 
                 //validate that if the message is sent by email the email is not empty
@@ -626,7 +635,7 @@ namespace PasswordChange.Controllers
         /// </summary>
         /// <param name="cedula">Nº Id Docente</param>
         /// <returns></returns>
-        public Docente ConsultarApiBoomi(string cedula,string strRetorno = "")
+        public Docente ConsultarApiBoomi(string cedula, string strRetorno = "")
         {
             Docente docente = new Docente();
             try
@@ -685,7 +694,7 @@ namespace PasswordChange.Controllers
                 {
 
                     new ExceptionHelper(ex, "ConsultarApiBoomi segunda Excepcion");
-                }               
+                }
             }
 
             return docente;
@@ -745,11 +754,36 @@ namespace PasswordChange.Controllers
         /// <returns></returns>
         public JsonResult ValidateUser(string cedula, string email)
         {
+
             int existe = 0;
             string messageReply = "";
 
             string strRetorno = string.Empty;
-            User filtro = new User();
+            User filtro = new User()
+            {
+                apellido = "ARRIETA",
+                nombre = "DUBAN ANDRES",
+                nDocument = "1001203956",
+                mobile = "3144224272",
+                email = email,
+                alternativeEmail = "darrietaquinchia@gmail.com",
+                id = 744553,
+                descripcion = "ESTUDIANTE",
+            };
+            existe = 1;
+            Session["DataUser"] = filtro;
+            Session["IsValidUser"] = true;
+            //I save the account type in a session variable 
+            Session["typeAccount"] = "ESTUDIANTE";
+
+
+
+            return Json(new
+            {
+                existe,
+                messageReply                
+            }, JsonRequestBehavior.AllowGet);
+
             try
             {
                 //string strURLCompleta = "http://10.0.36.175:81/API/LDAP/AutenticarCambioContrasena?email=" + email;
@@ -798,15 +832,13 @@ namespace PasswordChange.Controllers
                 }
 
 
-                if (data.Descripcion.Equals("ADMINISTRATIVO") || data.Descripcion.Equals("DOCENTE")
-                    || data.Descripcion.Equals("BANACADEMICO"))
+                if (data.Descripcion.Equals("ADMINISTRATIVO") || data.Descripcion.Equals("DOCENTE") || data.Descripcion.Equals("BANACADEMICO"))
                 {
-
                     Docente UserDocente = null;
                     //we add validation to see if we are using the api pager or the form's cedula
                     if (!string.IsNullOrEmpty(data.Pager))
                     {
-                        UserDocente = ConsultarApiBoomi(data.Pager,strRetorno/*email*/);
+                        UserDocente = ConsultarApiBoomi(data.Pager, strRetorno/*email*/);
                         //UserDocente = ConsultarApiBoomiTest(data.Pager);
                     }
                     else
@@ -838,8 +870,7 @@ namespace PasswordChange.Controllers
                     }
 
                 }
-                else if (data.Descripcion.Equals("ESTUDIANTE") || data.Descripcion.Equals("EGRESADO")
-                   || data.Descripcion.Equals("GRADUADO"))
+                else if (data.Descripcion.Equals("ESTUDIANTE") || data.Descripcion.Equals("EGRESADO") || data.Descripcion.Equals("GRADUADO"))
                 {
                     //I get banner data as a string  
                     string stringObject = ConsultarApiBanner(data.Cn);
@@ -917,8 +948,9 @@ namespace PasswordChange.Controllers
         /// <param name="email">Email of user</param>
         /// <param name="password">new Password</param>
         /// <returns></returns>
-        public JsonResult IsUpdatePassword(string email, string password, string nDocument)
+        public JsonResult IsUpdatePassword(/*string email,*/ string password/*, string nDocument*/)
         {
+            User user = (User)Session["DataUser"];
             int isUpdate = 0;
             bool isUpdateDA = false;
             string messageReply = "";
@@ -935,7 +967,7 @@ namespace PasswordChange.Controllers
                 try
                 {
                     //will store true if the password was updated
-                    isUpdateDA = serviceDA.updatePassword(Session["typeAccount"].ToString(), email, password);
+                    isUpdateDA = serviceDA.updatePassword(Session["typeAccount"].ToString(), user.email, password);
 
                     if (isUpdateDA)
                     {
@@ -943,11 +975,11 @@ namespace PasswordChange.Controllers
                         messageReply = "La contraseña fue cambiada con éxito, en un lapso de uno a dos minutos la podrás utilizar para acceder a tu cuenta.";
                         //we block the code 
                         //Devolver despues de pruebas
-                        codebyuserB.UpdateFlagCodBloqueado(nDocument, email, true);
+                        codebyuserB.UpdateFlagCodBloqueado(user.nDocument, user.email, true);
 
                         //we obtain the ip and write a log with that name
                         string userIP = Request.UserHostAddress;
-                        new WriteInfoUserInLog(nDocument, email, userIP);
+                        new WriteInfoUserInLog(user.nDocument, user.email, userIP);
                         isUpdate = 1;
                     }
                     else
