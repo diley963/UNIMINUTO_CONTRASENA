@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+    <title>UNIMINUTO | Tu Clave </title>
+    <link rel="icon" type="image/x-icon" href="~/Content/Template/assets/img/favicon.ico" />
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
+
+    <!--ANALITICA-->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CPKBCXVS5S"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-CPKBCXVS5S');
+    </script>
+    <!--END ANALITICA-->
+
+    <!--references to the boundle css are added-->
+    @Styles.Render("~/ContentTemplate/css")
+    @RenderSection("ExitPage", required: false)
+
+</head>
+<body class="form" oncontextmenu="return false" @*onkeydown="return false"*@>
+
+    @RenderBody()
+    <!--references to the boundle JS are added-->
+    @Scripts.Render("~/ContentTemplate/js")
+    @RenderSection("Inicio", required: false)
+
+</body>
+</html>

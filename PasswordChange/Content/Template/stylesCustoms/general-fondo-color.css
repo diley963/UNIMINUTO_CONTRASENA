@@ -1,0 +1,39 @@
+﻿body {
+    height: 400px;
+    background-image: url(../assets/img/fondosIndex/fondo.png);
+    background-size: cover;
+    /*background-size:100% 100%;*/
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.btn-azul {
+    background-color: #272454;
+    color: #ffffff;
+}
+
+    .btn-azul:hover {
+        background-color: #272350;
+        color: #ffa300;
+    }
+
+.btn-amarillo {
+    background-color: #ffa300;
+    color: #ffffff;
+}
+
+.btn-amarillo:hover {
+        background-color: #ffa300;
+        color: #ffffff;
+}
+
+.bg-azul {
+    background-color: #272454;
+}
+
+.p-gris {
+    font-size: 13px;
+    color: #58595c!important;
+    font-weight: 600;
+    margin-bottom: 25px;
+}

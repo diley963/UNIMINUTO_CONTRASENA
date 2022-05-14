@@ -1,0 +1,82 @@
+﻿@model PasswordChange.Models.User
+
+@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_LayoutTemplate.cshtml";
+}
+<link href="~/Content/Template/stylesCustoms/custom-home-index.css" rel="stylesheet" />
+
+<div class="col-sm-12" id="alertSuccess">
+    <!--filling a Dynamic message with Ajax-->
+</div>
+
+<div class="col-sm-12" id="alertFails">
+    <!--filling a Dynamic message with Ajax-->
+</div>
+
+<div class="row h-100 mw-100">
+
+    <div class="col-md-6 col-sm-12 d-none img-responsive d-md-block" id="divImg">
+        <!--Aqui va la imagen se carga con css-->
+
+    </div>
+
+    <div class="col-md-6 text-center col-sm-12 p-3">
+
+
+        <img src="~/Content/Template/assets/img/fondosIndex/horizontal.png" style="width:100%;"/>
+
+        @using (Html.BeginForm("FormMethodOfShipment", "Home", FormMethod.Post, new { id = "idFormIndex", @class = "row justify-content-center" }))
+        {
+            @Html.HiddenFor(m => m.alternativeEmail)
+            @Html.HiddenFor(m => m.mobile)
+            @Html.HiddenFor(m => m.nombre)
+            @Html.HiddenFor(m => m.apellido)
+            @Html.HiddenFor(m => m.descripcion)
+
+            <div class="m-2">
+                
+                <div class="mt-4 mb-2">
+                    <label class="" for="inlineFormInputGroupUsername">Ingresa tu correo institucional</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                @*<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>*@
+                                <img src="~/Content/Template/assets/img/outlook32.png" height="25" alt="imagen-outllok" />
+                            </div>
+                        </div>
+                        @Html.TextBoxFor(m => m.email, new { @class = "form form-control", placeholder = "Email" })
+                    </div>
+                </div>
+
+
+                <div class="mt-5 mb-2">
+                    <label class="font-family-text" for="inlineFormInputGroupUsername">Digita tu Identificación</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                @* <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><line x1="4" y1="9" x2="20" y2="9"></line><line x1="4" y1="15" x2="20" y2="15"></line><line x1="10" y1="3" x2="8" y2="21"></line><line x1="16" y1="3" x2="14" y2="21"></line></svg>*@
+                                <img src="~/Content/Template/assets/img/visa32.png" height="25" alt="imagen-visa" />
+                            </div>
+                        </div>
+                        @Html.TextBoxFor(m => m.nDocument, new { @class = "form form-control", placeholder = "Nº Identificacion", autocomplete = "off" })
+                    </div>
+                </div>
+
+                <div class="d-sm-flex justify-content-center mt-5">
+                    <div class="field-wrapper">
+                        <button type="button" id="btnSend" class="btn btn-azul  btn-lg mb-3 mr-3" value="">Ingresa aqui&nbsp;<div id="spinerBtnSend" class="spinner-border text-white mr-2 align-self-center loader-sm "></div></button>
+                    </div>
+                </div>
+
+            </div>
+        }
+
+    </div>
+</div>
+
+@section Inicio {
+    <script src="~/Scripts/Pages/AlertMessages.js?id=532"></script>
+    <script src="~/Scripts/Pages/Index.js?id=532"></script>
+    <script src="~/Scripts/Pages/BlockControlKey.js?id=532"></script>
+}

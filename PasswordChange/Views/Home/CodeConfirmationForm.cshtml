@@ -1,0 +1,127 @@
+﻿@model PasswordChange.Models.User
+@{
+    ViewBag.Title = "Contact";
+    Layout = "~/Views/Shared/_LayoutTemplate2.cshtml";
+}
+
+<link href="~/Content/Template/stylesCustoms/general-fondo-color.css" rel="stylesheet" />
+<div class="container mt-2">
+    <div id="toggleAccordion">
+
+        <div class="col-sm-12" id="alertSuccess">
+            <!--filling a Dynamic message with Ajax-->
+        </div>
+
+        <div class="col-sm-12" id="alertFails">
+            <!--filling a Dynamic message with Ajax-->
+        </div>
+
+        @Html.Hidden("attemps", null, new { value = ViewBag.attempts })
+        @Html.Hidden("retry_change_pass_minutes", null, new { value = ViewBag.retry_change_pass_minutes })
+        @Html.HiddenFor(M => M.nDocument)
+        @Html.HiddenFor(m => m.email)
+        @Html.HiddenFor(m => m.nombre)
+        @Html.HiddenFor(m => m.apellido)
+
+
+        @*@Html.Hidden("missingAttempts", null, new { value = 0 })*@
+                <div class="card-body mt-5" id="divConfirmCode">
+
+                    <div class="form-container outer">
+                        <div class="form-form">
+
+                            <div class="form-container">
+                                <div class="form-content">
+
+                                    <h1 class=""> @Model.nombre @Model.apellido</h1>
+                                    <p class="">Digita el código que fue enviado a su email o teléfono.</p>
+
+                                    @using (Html.BeginForm("CodeIsValid", "Home", FormMethod.Post, new { @class = "text-left" }))
+                                    {
+                                        <div class="form">
+
+                                            <div id="username-field" class="field-wrapper input">
+                                                @Html.TextBox("code", null, new { @class = "form-control", @type = "number" })
+                                            </div>
+
+                                            <div class="my-2">
+                                                <div class="text-center">
+                                                    <button id="btnValidateCode" type="button" class="btn btn-azul">Validar</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="card-body" style="display:none" id="divConfirmacionContrasena">
+
+
+                    <div class="form-container outer">
+                        <div class="form-form">
+
+                            <div class="form-container">
+                                <div class="form-content">
+
+                                    <h1 class="">@Model.nombre</h1>
+                                    <p class="">Ingrese su nueva contraseña teniendo en cuenta que debe tener <span> por lo menos 1
+                                        carácter especial y  por lo menos 1 letra  mayúscula , longitud mínima de 8 caracteres,  
+                                        no contener su nombre o apellidos </span>.</p>
+
+                                    @using (Html.BeginForm("CodeIsValid", "Home", FormMethod.Post, new { @class = "text-left" }))
+                                    {
+                                        <div class="form">
+
+
+                                            <label for="password">Contrase&ntilde;a</label>
+                                            <div class="input-group mb-4">
+                                                <input type="password" id="password" name="password" class="form-control" placeholder="Password" aria-label="notification" aria-describedby="basic-addon2">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text" id="basic-addon2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="toggle-password" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></span>
+                                                </div>
+                                            </div>
+
+
+                                            <label for="ConfirmPassword">Confirmar contrase&ntilde;a</label>
+                                            <div class="input-group mb-4 field-wrapper input">
+
+                                                <input type="password" id="ConfirmPassword" class="form-control" placeholder="Confirm Password" aria-label="notification" aria-describedby="basic-addon2">
+
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text" id="basic-addon2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="toggle-password2" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="my-2">
+                                                <div class="text-center">
+                                                    <button id="btnChangePassword" type="button" class="btn btn-azul">Cambiar Contrase&ntilde;a</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+    </div>
+</div>
+
+<div class="bg-azul p-2 fixed-bottom">
+    <p class="terms-conditions  text-center text-white">© 2021 All Rights Reserved Uniniminuto. <img src="~/Content/Template/assets/img/favicon.ico" /> </p>
+</div>
+
+
+@section CodeConfirmationForm {
+    <script src="~/Scripts/Pages/AlertMessages.js?id=532"></script>
+    <script src="~/Scripts/Pages/CodeConfirmationForm.js?id=532"></script>
+    <script src="~/Scripts/Pages/BlockControlKey.js?id=532"></script>
+}

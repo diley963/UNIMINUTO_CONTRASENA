@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://www.boomi.com/connector/wss" elementFormDefault="qualified" targetNamespace="http://www.boomi.com/connector/wss" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="https://boomi.uniminuto.edu/ws/soap/api_entidad_docentes?xsd=2" />
+  <xs:element name="ActualizarDatos" type="tns:ActualizarDatos" />
+  <xs:complexType name="ActualizarDatos">
+    <xs:sequence>
+      <xs:element minOccurs="0" ref="ActualizarDatos" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ActualizarDatosResponse" type="tns:ActualizarDatosResponse" />
+  <xs:complexType name="ActualizarDatosResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" ref="ActualizarDatosResponse" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ObtenerCertificadoLaboral" type="tns:ObtenerCertificadoLaboral" />
+  <xs:complexType name="ObtenerCertificadoLaboral">
+    <xs:sequence>
+      <xs:element minOccurs="0" ref="ObtenerCertificadoLaboral" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ObtenerCertificadoLaboralResponse" type="tns:ObtenerCertificadoLaboralResponse" />
+  <xs:complexType name="ObtenerCertificadoLaboralResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" ref="ObtenerCertificadoLaboralResponse" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ObtenerDatos" type="tns:ObtenerDatos" />
+  <xs:complexType name="ObtenerDatos">
+    <xs:sequence>
+      <xs:element minOccurs="0" ref="ObtenerDatos" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ObtenerDatosResponse" type="tns:ObtenerDatosResponse" />
+  <xs:complexType name="ObtenerDatosResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" ref="ObtenerDatosResponse" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

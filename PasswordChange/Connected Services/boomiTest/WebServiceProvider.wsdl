@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.boomi.com/connector/wss" xmlns:xs="http://www.w3.org/2001/XMLSchema" name="WebServiceProvider" targetNamespace="http://www.boomi.com/connector/wss" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xs:schema elementFormDefault="qualified" targetNamespace="http://www.boomi.com/connector/wss">
+      <xs:include schemaLocation="https://boomitest.uniminuto.edu/ws/soap/api_entidad_docentes?xsd=1" />
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="ActualizarDatos">
+    <wsdl:part name="parameters" element="tns:ActualizarDatos" />
+  </wsdl:message>
+  <wsdl:message name="ActualizarDatosResponse">
+    <wsdl:part name="parameters" element="tns:ActualizarDatosResponse" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerCertificadoLaboral">
+    <wsdl:part name="parameters" element="tns:ObtenerCertificadoLaboral" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerCertificadoLaboralResponse">
+    <wsdl:part name="parameters" element="tns:ObtenerCertificadoLaboralResponse" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerDatos">
+    <wsdl:part name="parameters" element="tns:ObtenerDatos" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerDatosResponse">
+    <wsdl:part name="parameters" element="tns:ObtenerDatosResponse" />
+  </wsdl:message>
+  <wsdl:portType name="WebServiceProviderPortType">
+    <wsdl:operation name="ActualizarDatos">
+      <wsdl:input message="tns:ActualizarDatos" />
+      <wsdl:output message="tns:ActualizarDatosResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerCertificadoLaboral">
+      <wsdl:input message="tns:ObtenerCertificadoLaboral" />
+      <wsdl:output message="tns:ObtenerCertificadoLaboralResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerDatos">
+      <wsdl:input message="tns:ObtenerDatos" />
+      <wsdl:output message="tns:ObtenerDatosResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="WebServiceProviderPortBinding" type="tns:WebServiceProviderPortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ActualizarDatos">
+      <soap:operation soapAction="ActualizarDatos" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerCertificadoLaboral">
+      <soap:operation soapAction="ObtenerCertificadoLaboral" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerDatos">
+      <soap:operation soapAction="ObtenerDatos" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="WebServiceProvider">
+    <wsdl:port name="WebServiceProviderPort" binding="tns:WebServiceProviderPortBinding">
+      <soap:address location="https://boomitest.uniminuto.edu/ws/soap/api_entidad_docentes" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

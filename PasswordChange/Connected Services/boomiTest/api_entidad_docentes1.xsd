@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema elementFormDefault="qualified" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="ActualizarDatos" type="ActualizarDatos" />
+  <xs:complexType name="ActualizarDatos">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="Docente">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="Uid_Usuario" type="xs:string" />
+            <xs:element minOccurs="1" maxOccurs="1" name="Barrio" type="xs:string" />
+            <xs:element minOccurs="1" maxOccurs="1" name="Direccion" type="xs:string" />
+            <xs:element minOccurs="1" maxOccurs="1" name="Celular" type="xs:string" />
+            <xs:element minOccurs="1" maxOccurs="1" name="Telefono" type="xs:string" />
+            <xs:element minOccurs="1" maxOccurs="1" name="Municipio">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element minOccurs="1" maxOccurs="1" name="Id" type="xs:string" />
+                  <xs:element minOccurs="0" maxOccurs="1" name="Descripcion" type="xs:string" />
+                  <xs:element minOccurs="1" maxOccurs="1" name="Departamento">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element minOccurs="1" maxOccurs="1" name="Id" type="xs:string" />
+                        <xs:element minOccurs="0" maxOccurs="1" name="Descripcion" type="xs:string" />
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ActualizarDatosResponse" type="ActualizarDatosResponse" />
+  <xs:complexType name="ActualizarDatosResponse">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="ResultadoTransaccion">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="Codigo" type="xs:string" />
+            <xs:element minOccurs="1" maxOccurs="1" name="Mensaje" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ObtenerCertificadoLaboral" type="ObtenerCertificadoLaboral" />
+  <xs:complexType name="ObtenerCertificadoLaboral">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="IdColaborador" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Salario" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Dirigido" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Historia" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ObtenerCertificadoLaboralResponse" type="ObtenerCertificadoLaboralResponse" />
+  <xs:complexType name="ObtenerCertificadoLaboralResponse">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="ResultadoTransaccion">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="Codigo" type="xs:string" />
+            <xs:element minOccurs="1" maxOccurs="1" name="Mensaje" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ObtenerDatos" type="ObtenerDatos" />
+  <xs:complexType name="ObtenerDatos">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="idColaborador" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ObtenerDatosResponse" type="ObtenerDatosResponse" />
+  <xs:complexType name="ObtenerDatosResponse">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="Docente">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="Uid_Usuario" type="xs:string" />
+            <xs:element minOccurs="1" maxOccurs="1" name="Nombre" type="xs:string" />
+            <xs:element minOccurs="1" maxOccurs="1" name="Apellidos" type="xs:string" />
+            <xs:element minOccurs="1" maxOccurs="1" name="Barrio" type="xs:string" />
+            <xs:element minOccurs="1" maxOccurs="1" name="Cedula" type="xs:string" />
+            <xs:element minOccurs="1" maxOccurs="1" name="Direccion" type="xs:string" />
+            <xs:element minOccurs="1" maxOccurs="1" name="Celular" type="xs:string" />
+            <xs:element minOccurs="1" maxOccurs="1" name="Telefono" type="xs:string" />
+            <xs:element minOccurs="1" maxOccurs="1" name="Sede">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element minOccurs="1" maxOccurs="1" name="Id" type="xs:string" />
+                  <xs:element minOccurs="1" maxOccurs="1" name="Nombre" type="xs:string" />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element minOccurs="1" maxOccurs="1" name="Municipio">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element minOccurs="1" maxOccurs="1" name="Id" type="xs:string" />
+                  <xs:element minOccurs="0" maxOccurs="1" name="Descripcion" type="xs:string" />
+                  <xs:element minOccurs="1" maxOccurs="1" name="Departamento">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element minOccurs="1" maxOccurs="1" name="Id" type="xs:string" />
+                        <xs:element minOccurs="0" maxOccurs="1" name="Descripcion" type="xs:string" />
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element minOccurs="0" maxOccurs="1" name="Cargo" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Estado" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Mail" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="ResultadoTransaccion">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="Codigo" type="xs:string" />
+            <xs:element minOccurs="1" maxOccurs="1" name="Mensaje" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

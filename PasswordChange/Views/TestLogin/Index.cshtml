@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+   Layout = null;
+}
+
+<h2>Index</h2>
+
+<div>
+    @using (Html.BeginForm("ValidateLogin", "TestLogin", FormMethod.Post, new { id = "idFormIndex", @class = "text-left" }))
+    {
+        <div class="form">
+
+            <div id="email-field" class="field-wrapper input">
+                <input type="text" name="userName" id="userName"  placeholder="Usuario" style="width:300px"/>
+            </div>
+            <br />
+
+            <div id="email-field" class="field-wrapper input">
+               <input type="password" name="password" id="password" placeholder="Password" style="width:300px"/>
+             </div>
+
+
+            <br />
+            <div class="d-sm-flex justify-content-center">
+                <div class="field-wrapper">
+                    <button type="button" id="btnLogin" class="btn btn-primary  btn-lg mb-3 mr-3" value="">Validar Login</button>
+                </div>
+            </div>
+
+        </div>
+    }
+</div>
+<script src="~/Scripts/jquery-3.6.0.js"></script>
+<script src="~/Scripts/Pages/TestLogin.js"></script>

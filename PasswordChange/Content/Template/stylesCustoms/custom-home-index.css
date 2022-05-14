@@ -1,0 +1,62 @@
+﻿/*body {
+    height: 400px;
+    background-image: url(../assets/img/fondosIndex/fondo.png);
+    background-size: cover;*/
+/*background-size:100% 100%;*/
+/*background-repeat: no-repeat;
+    background-position: center center;
+}*/
+
+.btn-azul {
+    background-color: #272454;
+    color: #ffffff;
+}
+
+
+    .btn-azul:hover {
+        background-color: #272350;
+        color: #ffa300;
+    }
+
+.btn-amarillo {
+    background-color: #ffa300;
+    color: #ffffff;
+}
+
+    .btn-amarillo:hover {
+        background-color: #ffa300;
+        color: #ffffff;
+    }
+
+.input-group > .form-control {
+    width: 350px;
+    -webkit-border-radius: 0 15px 15px 0;
+    border-radius: 15px 15px 15px 15px;
+}
+
+.input-group .input-group-prepend .input-group-text {
+    -webkit-border-radius: 0 15px 15px 0;
+    border-radius: 15px 0 0 15px !important;
+    color: transparent !important;
+}
+
+
+#divImgHorizontal {
+    height:300px;
+    background-image: url('../assets/img/fondosIndex/horizontal.png');
+    /*background-size: cover;*/
+    background-size: 100% 100%;
+
+    background-repeat: no-repeat;
+}
+
+#divImg {
+    background-image: url('../assets/img/fondosIndex/lateral.png');
+    background-size: cover;
+    /*background-size: 100% 100%;*/
+    background-repeat: no-repeat;
+    
+}
+
+
+

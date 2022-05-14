@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="73a67242-6274-461a-a467-2d50e3b5c7cb" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="https://boomitest.uniminuto.edu/ws/soap/api_entidad_docentes?wsdl" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="WebServiceProvider.wsdl" MetadataType="Wsdl" ID="81c71006-6c60-4b5a-b3dc-dc539a81fde4" SourceId="1" SourceUrl="https://boomitest.uniminuto.edu/ws/soap/api_entidad_docentes?wsdl" />
+    <MetadataFile FileName="api_entidad_docentes.xsd" MetadataType="Schema" ID="2cca3ac1-c508-4713-869a-f506a278ddb1" SourceId="1" SourceUrl="https://boomitest.uniminuto.edu/ws/soap/api_entidad_docentes?xsd=1" />
+    <MetadataFile FileName="api_entidad_docentes1.xsd" MetadataType="Schema" ID="7479014e-1245-4996-a75f-4466b9d667f9" SourceId="1" SourceUrl="https://boomitest.uniminuto.edu/ws/soap/api_entidad_docentes?xsd=2" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>
