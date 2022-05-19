@@ -759,30 +759,38 @@ namespace PasswordChange.Controllers
             string messageReply = "";
 
             string strRetorno = string.Empty;
-            User filtro = new User()
-            {
-                apellido = "ARRIETA",
-                nombre = "DUBAN ANDRES",
-                nDocument = "1001203956",
-                mobile = "3144224272",
-                email = email,
-                alternativeEmail = "darrietaquinchia@gmail.com",
-                id = 744553,
-                descripcion = "ESTUDIANTE",
-            };
-            existe = 1;
+
+            //////
+            /// datos de prueba 
+
+            ///
+
+            //User filtro = new User()
+            //{
+            //    apellido = "ARRIETA",
+            //    nombre = "DUBAN ANDRES",
+            //    nDocument = "1001203956",
+            //    mobile = "3144224272",
+            //    email = email,
+            //    alternativeEmail = "darrietaquinchia@gmail.com",
+            //    id = 744553,
+            //    descripcion = "ESTUDIANTE",
+            //};
+            //existe = 1;
+            User filtro = new User();
             Session["DataUser"] = filtro;
+
             Session["IsValidUser"] = true;
             //I save the account type in a session variable 
             Session["typeAccount"] = "ESTUDIANTE";
 
 
 
-            return Json(new
-            {
-                existe,
-                messageReply                
-            }, JsonRequestBehavior.AllowGet);
+            //return Json(new
+            //{
+            //    existe,
+            //    messageReply                
+            //}, JsonRequestBehavior.AllowGet);
 
             try
             {
