@@ -330,8 +330,11 @@ namespace PasswordChange.Controllers
 
                         //Devolver despues de pruebas
                         //CAMBIO
-                        string mobileDecript = decryptBase64(user.mobile);
-                        respuestaMasivApi = SendMsmMasivApi(mobileDecript/*user.mobile*/, codeGenerate);
+                        string mobileDecript1 = user.mobile;
+
+                        string mobileDecript = user.mobile.Replace(user.mobile.Substring(user.mobile.Length - 4), "****");
+
+                        respuestaMasivApi = SendMsmMasivApi(mobileDecript1/*user.mobile*/, codeGenerate);
 
                         respuestaMasivApi = 0;
 
@@ -377,7 +380,7 @@ namespace PasswordChange.Controllers
             {
 
                 //validate that if the message is sent by email the email is not empty
-                if (!String.IsNullOrEmpty(user.email))
+                if (!String.IsNullOrEmpty(user.alternativeEmail))
                 {
                     try
                     {
@@ -391,7 +394,7 @@ namespace PasswordChange.Controllers
                         //messageReply = "El código fue enviado con éxito al email " + user.alternativeEmail;
 
                         //CAMBIO 
-                        string decodeb64AlternativeEmail = decryptBase64(user.alternativeEmail);
+                        string decodeb64AlternativeEmail = user.alternativeEmail;
                         SendEmail(/*"smtp-mail.outlook.com"*/"smtp.uniminuto.edu", Convert.ToInt32("25"), /*"hbt_send@hotmail.com"*/ /*"no-reply@uniminuto.edu"*/"tuclave@uniminuto.edu", ""/*"HBTAsdf1234$"*/, messageEmail, "Code Autenticacion", "UNIMINUTO", decodeb64AlternativeEmail/*user.alternativeEmail*//*"hbtpruebas13@gmail.com"*/);
                         messageReply = "El código fue enviado con éxito al email " + decodeb64AlternativeEmail; //user.alternativeEmail;
 
@@ -862,7 +865,7 @@ namespace PasswordChange.Controllers
                         filtro.nombre = UserDocente.Nombre;
                         filtro.nDocument = UserDocente.Cedula;
                         filtro.mobile = UserDocente.Celular;
-                        //filtro.alternativeEmail = email;
+                        filtro.email = UserDocente.Email;
                         filtro.alternativeEmail = UserDocente.Email;
                         filtro.id = int.Parse(UserDocente.Uid_Usuario);
                         filtro.descripcion = data.Descripcion;
@@ -891,6 +894,7 @@ namespace PasswordChange.Controllers
                     {
                         filtro.apellido = studentDeserealizado.estudiante.Apellido;
                         filtro.nombre = studentDeserealizado.estudiante.Nombre;
+                        filtro.email = studentDeserealizado.estudiante.EmailInstitucional;
                         if (!string.IsNullOrEmpty(data.Pager))
                         {
                             filtro.nDocument = data.Pager;//cedula;

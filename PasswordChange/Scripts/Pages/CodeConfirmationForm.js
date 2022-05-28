@@ -24,21 +24,21 @@ btnValidateCode.onclick = function () { SendDataCode(); }
 
 
 function SendDataCode() {
-   
+
     //The value entered in the input Code is captured.
     if (code.value == '') {
         ShowMessageFail("No puede haber campos vacíos ingrese un código");
         return;
     } else {
-        let codigo= code.value;
+        let codigo = code.value;
         //missingAttempts += 1;
-       // var frm = new FormData();
-       // frm.append("code", code.value);
-       //// frm.append("missingAttempts", missingAttempts);
-       // frm.append("cedula", document.getElementById("nDocument").value);
-       // frm.append("email", document.getElementById("email").value);
-       // frm.append("nombre", document.getElementById("nombre").value);
-       // frm.append("apellido", document.getElementById("apellido").value);
+        // var frm = new FormData();
+        // frm.append("code", code.value);
+        //// frm.append("missingAttempts", missingAttempts);
+        // frm.append("cedula", document.getElementById("nDocument").value);
+        // frm.append("email", document.getElementById("email").value);
+        // frm.append("nombre", document.getElementById("nombre").value);
+        // frm.append("apellido", document.getElementById("apellido").value);
         //Enviamos la Informacion al Controlador
 
         $.ajax({
@@ -98,7 +98,7 @@ function SendDataCode() {
         });
 
 
-        
+
 
     }
 
@@ -143,14 +143,13 @@ btnChangePassword.onclick = function () {
 
             if ((/[A-Z]/.test(inputConfirmPassword.value)) && (/[0-9]/.test(inputConfirmPassword.value))
                 && ((/#/.test(inputConfirmPassword.value)) || (/@/.test(inputConfirmPassword.value))
-                || inputConfirmPassword.value.indexOf("%")>0 || inputConfirmPassword.value.indexOf("&")>0 
-                || inputConfirmPassword.value.indexOf("*")>0  || inputConfirmPassword.value.indexOf("$")>0  
-                || inputConfirmPassword.value.indexOf("'")>0 || inputConfirmPassword.value.indexOf(".")>0 
-                || inputConfirmPassword.value.indexOf("?") > 0 || inputConfirmPassword.value.indexOf("!") > 0
-                || inputConfirmPassword.value.indexOf("_") > 0
+                    || inputConfirmPassword.value.indexOf("%") > 0 || inputConfirmPassword.value.indexOf("&") > 0
+                    || inputConfirmPassword.value.indexOf("*") > 0 || inputConfirmPassword.value.indexOf("$") > 0
+                    || inputConfirmPassword.value.indexOf("'") > 0 || inputConfirmPassword.value.indexOf(".") > 0
+                    || inputConfirmPassword.value.indexOf("?") > 0 || inputConfirmPassword.value.indexOf("!") > 0
+                    || inputConfirmPassword.value.indexOf("_") > 0
                 )
-            )
-            {
+            ) {
                 //MensajeExitPage = "Contraseña Cambiada con Exito";
                 //code = 200;
                 //ShowMessageOk("Clave Cambiada con exito");
@@ -160,17 +159,15 @@ btnChangePassword.onclick = function () {
                 //frm.append("email", document.getElementById("email").value)
                 //frm.append("nDocument", document.getElementById("nDocument").value)
 
-                let password = inputPassword.value;
+                let _password = inputPassword.value;
+
 
                 $.ajax({
-
                     type: 'POST',
                     url: 'IsUpdatePassword',
-                    data: password,
-                    contentType: false,
-                    processData: false,
+                    dataType: 'json',
+                    data: { password: _password },
                     success: function (data) {
-
                         //if the process is successful we show the hidden form for password change
                         if (data.isUpdate == 1) {
                             ShowMessageOk(data.messageReply);
@@ -180,8 +177,14 @@ btnChangePassword.onclick = function () {
                         } else {
                             ShowMessageFail(data.messageReply);
                         }
-                    }
+                    },
+                    error: function (e) {
+                        alert(e.statusText);
+                        //Swal.fire("Señor(a) Usuario(a)", "Fallo al traer los registros", "error");
+                    },
+
                 });
+
 
             } else {
                 ShowMessageFail("Clave invalida debe contener por lo menos 1 mayúscula un número y un carácter especial");
