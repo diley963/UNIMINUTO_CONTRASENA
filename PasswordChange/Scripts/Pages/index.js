@@ -54,20 +54,10 @@ function SendData() {
                 processData: false,
                 success: function (data) {
 
-                    if (data.existe > 0) {
-                        //alternativeEmail.value = data.filtro.alternativeEmail;
-                        //mobile.value = data.filtro.mobile;
-                        //CAMBIO 
-                        //alternativeEmail.value = utf8_to_b64(data.filtro.alternativeEmail);
-                        //mobile.value = utf8_to_b64(data.filtro.mobile);
-                        //nombre.value = data.filtro.nombre;
-                        //apellido.value = data.filtro.apellido;
-                        //nDocument.value = data.filtro.nDocument;
-                        //descripcion.value = data.filtro.descripcion;
+                    if (data.existe > 0) {                        
                         document.getElementById("idFormIndex").submit();
                     } else {
                         ShowMessageFail(data.messageReply)
-                        //we hide the send button sniper after 5 seconds
                         setTimeout(function () { $("#spinerBtnSend").hide(); }, 5000);
                     }
                 }
@@ -91,19 +81,8 @@ nDocument.onkeypress = function (event) {
     //we indicate that only numbers with a length of 10 characters can be entered
     return ((event.charCode >= 48 && event.charCode <= 57));
 
-    // No permitir ñ o Ñ  (event.charCode != [241] && event.charCode != [209])
-    // Permitir @  (event.charCode == [64])
-    // Permitir numero de 0-9 (event.charCode >= 48 && event.charCode <= 57)
-    // Permitit A-Z Mayuscula (event.charCode >= 65 && event.charCode <= 90)
-    // Permitir a-z minuscula (event.charCode >= 97 && event.charCode <= 122)
-    // Permitir # (event.charCode == [35])
-    // Permitir * (event.charCode == [42])
-    // Permitir $ (event.charCode == [36])
-    // Permitir % (event.charCode == [37])
-    // Permitir & (event.charCode == [38])
+    
 }
-
-
 //we validate that the when focus is lost in the email input it has the valid formatting 
 //email.onblur = function () {
 //    var caracter = this.value;

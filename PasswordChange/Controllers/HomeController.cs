@@ -1,38 +1,29 @@
 ﻿using Business.Implementations;
 using Helpers;
 using Helpers.Implementations;
+using Microsoft.Web.Helpers;
 using Model;
-using Newtonsoft.Json;
 using PasswordChange.Filter;
 using PasswordChange.Models;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Reflection;
 using System.Text;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 
-
 namespace PasswordChange.Controllers
-{
-
+{ 
     public class HomeController : Controller
     {
         //cambio desde el local
         #region PROPIEDADES
+        int contador = 0;
         //variable to block Process and become 1 to 1
         private static readonly object LockEmail = new object();
         private UserLockedBusiness userlockedB = new UserLockedBusiness();
         private CodeByUserBusiness codebyuserB = new CodeByUserBusiness();
-
-        /* public string attemps = new IniFile("./Sources/settings.ini").Read("attemps_number", "default");
-         public string retry_change_pass_minutes = new IniFile("./Sources/settings.ini").Read("retry_change_pass_minutes", "default");
-         public string expiration_time_minutes = new IniFile("./Sources/settings.ini").Read("expiration_time_minutes", "default");*/
 
         public string attemps = ConfigurationManager.AppSettings["Ini:attemps_number"];
         public string retry_change_pass_minutes = ConfigurationManager.AppSettings["Ini:retry_change_pass_minutes"];
@@ -51,15 +42,14 @@ namespace PasswordChange.Controllers
         }
 
         [Seguridad]
-        //[HttpPost, OutputCache(NoStore = true, Duration = 1)]
         /// <summary>
         /// form Receiving the Document and user's email to Return your information
         /// </summary>
         /// <param name="user"></param>
         /// <returns>returns User Information</returns>
-        public ActionResult FormMethodOfShipment(User user)
+        public ActionResult FormMethodOfShipment()
         {
-            user = (User)Session["DataUser"];
+            User user = (User)Session["DataUser"];
 
             //We verify that if the user arrives null it is redirected to an exit view.
             if (user.nDocument == null)
@@ -99,10 +89,6 @@ namespace PasswordChange.Controllers
             string number = user.mobile;
             string email = user.alternativeEmail;
 
-            ////CAMBIO 
-            //string email = decryptBase64(user.alternativeEmail);
-            //string number = decryptBase64(user.mobile);
-
             if (!string.IsNullOrEmpty(number))
             {
                 ViewBag.mobileReplace = number.Replace(number.Substring(number.Length - 4), "****");
@@ -123,9 +109,9 @@ namespace PasswordChange.Controllers
         /// form where you enter the verification code sent to your email or phone number
         /// </summary>
         /// <returns></returns>
-        public ActionResult CodeConfirmationForm(User user)
+        public ActionResult CodeConfirmationForm()
         {
-            user = (User)Session["DataUser"];
+            User user = (User)Session["DataUser"];
             ViewBag.attemps = attemps;
             ViewBag.retry_change_pass_minutes = retry_change_pass_minutes;
             if (user.nDocument == null)
@@ -161,7 +147,7 @@ namespace PasswordChange.Controllers
         /// </summary>
         /// <param name="code"></param>
         /// <returns>1 if it is valid and 0 if it is not valid</returns>
-        public JsonResult CodeIsValid(int code /*int missingAttempts,*/ /*UserLocked userLocked*/)
+        public JsonResult CodeIsValid(int code)
         {
             User user = (User)Session["DataUser"];
             UserLocked userLocked = new UserLocked()
@@ -249,6 +235,7 @@ namespace PasswordChange.Controllers
             }
         }
 
+
         /// <summary>
         /// Method for sending code either by phone or mail
         /// </summary>
@@ -256,166 +243,167 @@ namespace PasswordChange.Controllers
         /// <returns>returns true if the message could be sent and false if it could not.</returns>        
         public JsonResult SendCode(string metodo)
         {
-
             User user = (User)Session["DataUser"];
             string messageReply = "";
             //flag indicating whether the code has been sent or not
             bool isSend = false;
+            contador++;
+            if (contador <=2)
+            {               
 
-            if (metodo.Equals("tengoCodigo"))
-            {
-                isSend = true;
-                messageReply = "tengoCodigo";
-                return Json(new { messageReply, isSend }, JsonRequestBehavior.AllowGet);
-            }
-
-            //It is called an auxiliary class that generates random codes.
-            GenerateRandomNumbers Generatecode = new GenerateRandomNumbers();
-            string codeGenerate = "";
-            try
-            {
-                //Devolver despues de pruebas
-                codeGenerate = Generatecode.GenerateNumber();
-                // codeGenerate = "1234";
-            }
-            catch (Exception e)
-            {
-
-                new ExceptionHelper(e, "SendCode");
-            }
-            //
-            CodeByUser cod = new CodeByUser();
-
-            //add a default code in case the generated code comes empty or null
-            if (string.IsNullOrEmpty(codeGenerate))
-            {
-                // codeGenerate = "581126";
-                Random generator = new Random();
-                codeGenerate = generator.Next(0, 1000000).ToString("D6");
-            }
-
-            try
-            {
-
-                //we set the values to the codeByUser object with the User's data 
-                cod.cedula = user.nDocument;
-                cod.email = user.email;
-                cod.codVerificacion = codeGenerate;
-                //fCaducidad = DateTime.Now.AddMinutes(int.Parse(expiration_time_minutes))
-                cod.fCaducidad = DateTime.Now.AddMinutes(Convert.ToInt32(expiration_time_minutes));
-
-            }
-            catch (Exception e)
-            {
-                messageReply = "Error en la conversion de FCaducidad";
-                isSend = false;
-                new ExceptionHelper(e, "SendCode convert FCaducidad ****");
-                return Json(new { messageReply, isSend }, JsonRequestBehavior.AllowGet);
-            }
-
-
-
-            if (metodo.Equals("mobile")/*==1*/)
-            {
-                //validate that if the message is sent by mobile the number is not empty
-                if (!String.IsNullOrEmpty(user.mobile))
+                if (metodo.Equals("tengoCodigo"))
                 {
-                    // SendSmsWhitTwilio SendSMS = new SendSmsWhitTwilio();
+                    isSend = true;
+                    messageReply = "tengoCodigo";
+                    return Json(new { messageReply, isSend }, JsonRequestBehavior.AllowGet);
+                }
 
-                    //captures what the method returns SendMsmMasivApi
-                    int respuestaMasivApi = (int)responseSendMasivApi.default_value;
-                    try
+                //It is called an auxiliary class that generates random codes.
+                GenerateRandomNumbers Generatecode = new GenerateRandomNumbers();
+                string codeGenerate = "";
+                try
+                {
+                    codeGenerate = Generatecode.GenerateNumber();
+                }
+                catch (Exception e)
+                {
+
+                    new ExceptionHelper(e, "SendCode");
+                }
+                //
+                CodeByUser cod = new CodeByUser();
+
+                //add a default code in case the generated code comes empty or null
+                if (string.IsNullOrEmpty(codeGenerate))
+                {
+                    // codeGenerate = "581126";
+                    Random generator = new Random();
+                    codeGenerate = generator.Next(0, 1000000).ToString("D6");
+                }
+
+                try
+                {
+
+                    //we set the values to the codeByUser object with the User's data 
+                    cod.cedula = user.nDocument;
+                    cod.email = user.email;
+                    cod.codVerificacion = codeGenerate;
+                    //fCaducidad = DateTime.Now.AddMinutes(int.Parse(expiration_time_minutes))
+                    cod.fCaducidad = DateTime.Now.AddMinutes(Convert.ToInt32(expiration_time_minutes));
+
+                }
+                catch (Exception e)
+                {
+                    messageReply = "Error en la conversion de FCaducidad";
+                    isSend = false;
+                    new ExceptionHelper(e, "SendCode convert FCaducidad ****");
+                    return Json(new { messageReply, isSend }, JsonRequestBehavior.AllowGet);
+                }
+
+
+                if (metodo.Equals("mobile")/*==1*/)
+                {
+                    //validate that if the message is sent by mobile the number is not empty
+                    user.mobile = "573508045496";
+                    if (!String.IsNullOrEmpty(user.mobile))
                     {
-                        // SendSMS.SendMessage(user.mobile, codeGenerate);
+                        // SendSmsWhitTwilio SendSMS = new SendSmsWhitTwilio();
 
-                        //Devolver despues de pruebas
-                        //CAMBIO
-                        string mobileDecript1 = user.mobile;
-
-                        string mobileDecript = user.mobile.Replace(user.mobile.Substring(user.mobile.Length - 4), "****");
-
-                        respuestaMasivApi = SendMsmMasivApi(mobileDecript1/*user.mobile*/, codeGenerate);
-
-                        respuestaMasivApi = 0;
-
-                        //we validate that the method returns and display the messages
-                        if (respuestaMasivApi == (int)responseSendMasivApi.sms_send_success)
+                        //captures what the method returns SendMsmMasivApi
+                        int respuestaMasivApi = (int)responseSendMasivApi.default_value;
+                        try
                         {
-                            messageReply = "Fue enviado con éxito el Código al celular =>" + mobileDecript;//user.mobile;
+                            // SendSMS.SendMessage(user.mobile, codeGenerate)
+
+                            string mobileDecript1 = user.mobile;
+
+                            string mobileDecript = user.mobile.Replace(user.mobile.Substring(user.mobile.Length - 4), "****");
+
+                            respuestaMasivApi = SendMsmMasivApi(mobileDecript1, codeGenerate);
+
+                            respuestaMasivApi = 0;
+
+                            //we validate that the method returns and display the messages
+                            if (respuestaMasivApi == (int)responseSendMasivApi.sms_send_success)
+                            {
+                                messageReply = "Fue enviado con éxito el Código al celular =>" + mobileDecript;//user.mobile;
+                                isSend = true;
+                                codebyuserB.InsertCodeByUser(cod);
+                            }
+                            else if (respuestaMasivApi == (int)responseSendMasivApi.error_destination_number)
+                            {
+                                messageReply = "No se envio el mensaje de texto error de numero de destino => " + mobileDecript;//user.mobile;
+                            }
+                            else if (respuestaMasivApi == (int)responseSendMasivApi.credential_error)
+                            {
+                                messageReply = "No se envio el mensaje de texto error de credenciales en api Masiv";
+                            }
+                            else if (respuestaMasivApi == (int)responseSendMasivApi.encript_decrypt_error)
+                            {
+                                messageReply = "No se envio el mensaje de texto error en Masiv desencriptando informacion";
+                            }
+                            else
+                            {
+                                messageReply = "No se envio el mensaje de texto error en Metodo Masiv";
+                            }
+
+                        }
+                        catch (Exception e)
+                        {
+                            //messageReply = "Excepcion al enviar el Codigo al celular Detalle ==> " + e.Message;
+                            messageReply = "Ocurrió un fallo al enviar código al celular ";
+                            new ExceptionHelper(e, "SendCode");
+                        }
+                    }
+                    else
+                    {
+                        messageReply = "No se puede enviar código al teléfono porque este campo está vacío Elija la opción Email";
+                    }
+
+                }
+                else if (metodo.Equals("email"))
+                {
+
+                    //validate that if the message is sent by email the email is not empty
+                    if (!String.IsNullOrEmpty(user.alternativeEmail))
+                    {
+                        try
+                        {
+                            //Devolver despues de pruebas
+
+                            string messageEmail = "Estimado(a)  <b>" + user.nombre + "</b> TU CLAVE UNIMINUTO te informa que el código de verificación es <b>" + codeGenerate +
+                                "</b>. Recuerda que el código expirará en <b>" + expiration_time_minutes + "minutos</b>. Si tienes alguna duda puedes ingresar a nuestra Mesa de Servicio de Tecnología en http://soporte.uniminuto.edu/ o marca a la línea telefónica de tu sede o la línea nacional 01 8000 119 390 y digita la EXT. 6622, y un agente de servicio tecnológico te atenderá." +
+                                "<br> *Esta es una notificación automática, por favor no respondas este mensaje.";
+
+                            //CAMBIO 
+                            string decodeb64AlternativeEmail = user.alternativeEmail;
+
+                            string[] splitemail = user.alternativeEmail.Split('@');
+                            string email1 = splitemail[0].Replace(splitemail[0].Substring(splitemail[0].Length - 4), "****");
+                            string decodeEmail = email1 + "@" + splitemail[1];
+
+                            SendEmail(/*"smtp-mail.outlook.com"*/"smtp.uniminuto.edu", Convert.ToInt32("25"), /*"hbt_send@hotmail.com"*/ /*"no-reply@uniminuto.edu"*/"tuclave@uniminuto.edu", ""/*"HBTAsdf1234$"*/, messageEmail, "Code Autenticacion", "UNIMINUTO", decodeb64AlternativeEmail/*user.alternativeEmail*//*"hbtpruebas13@gmail.com"*/);
+                            messageReply = "El código fue enviado con éxito al email " + decodeEmail; //user.alternativeEmail;
+
                             isSend = true;
                             codebyuserB.InsertCodeByUser(cod);
                         }
-                        else if (respuestaMasivApi == (int)responseSendMasivApi.error_destination_number)
+                        catch (Exception e)
                         {
-                            messageReply = "No se envio el mensaje de texto error de numero de destino => " + mobileDecript;//user.mobile;
-                        }
-                        else if (respuestaMasivApi == (int)responseSendMasivApi.credential_error)
-                        {
-                            messageReply = "No se envio el mensaje de texto error de credenciales en api Masiv";
-                        }
-                        else if (respuestaMasivApi == (int)responseSendMasivApi.encript_decrypt_error)
-                        {
-                            messageReply = "No se envio el mensaje de texto error en Masiv desencriptando informacion";
-                        }
-                        else
-                        {
-                            messageReply = "No se envio el mensaje de texto error en Metodo Masiv";
-                        }
 
+                            messageReply = "No se pudo enviar el código al email";
+                            new ExceptionHelper(e, "SendCode");
+                        }
                     }
-                    catch (Exception e)
+                    else
                     {
-                        //messageReply = "Excepcion al enviar el Codigo al celular Detalle ==> " + e.Message;
-                        messageReply = "Ocurrió un fallo al enviar código al celular ";
-                        new ExceptionHelper(e, "SendCode");
+                        messageReply = "No se puede enviar código al email porque este campo esta vacío elija opción teléfono";
                     }
-                }
-                else
-                {
-                    messageReply = "No se puede enviar código al teléfono porque este campo está vacío Elija la opción Email";
                 }
 
             }
-            else if (metodo.Equals("email") /*== 2*/)
-            {
-
-                //validate that if the message is sent by email the email is not empty
-                if (!String.IsNullOrEmpty(user.alternativeEmail))
-                {
-                    try
-                    {
-                        //Devolver despues de pruebas
-
-                        string messageEmail = "Estimado(a)  <b>" + user.nombre + "</b> TU CLAVE UNIMINUTO te informa que el código de verificación es <b>" + codeGenerate +
-                            "</b>. Recuerda que el código expirará en <b>" + expiration_time_minutes + "minutos</b>. Si tienes alguna duda puedes ingresar a nuestra Mesa de Servicio de Tecnología en http://soporte.uniminuto.edu/ o marca a la línea telefónica de tu sede o la línea nacional 01 8000 119 390 y digita la EXT. 6622, y un agente de servicio tecnológico te atenderá." +
-                            "<br> *Esta es una notificación automática, por favor no respondas este mensaje.";
-
-                        //SendEmail(/*"smtp-mail.outlook.com"*/"smtp.uniminuto.edu", Convert.ToInt32("25"), /*"hbt_send@hotmail.com"*/ /*"no-reply@uniminuto.edu"*/"tuclave@uniminuto.edu", ""/*"HBTAsdf1234$"*/, messageEmail, "Code Autenticacion", "UNIMINUTO", user.alternativeEmail/*"hbtpruebas13@gmail.com"*/);
-                        //messageReply = "El código fue enviado con éxito al email " + user.alternativeEmail;
-
-                        //CAMBIO 
-                        string decodeb64AlternativeEmail = user.alternativeEmail;
-                        SendEmail(/*"smtp-mail.outlook.com"*/"smtp.uniminuto.edu", Convert.ToInt32("25"), /*"hbt_send@hotmail.com"*/ /*"no-reply@uniminuto.edu"*/"tuclave@uniminuto.edu", ""/*"HBTAsdf1234$"*/, messageEmail, "Code Autenticacion", "UNIMINUTO", decodeb64AlternativeEmail/*user.alternativeEmail*//*"hbtpruebas13@gmail.com"*/);
-                        messageReply = "El código fue enviado con éxito al email " + decodeb64AlternativeEmail; //user.alternativeEmail;
-
-                        isSend = true;
-                        codebyuserB.InsertCodeByUser(cod);
-                    }
-                    catch (Exception e)
-                    {
-
-                        // messageReply = "No se pudo enviar el código al email detalle ==> " + e.Message;
-                        messageReply = "No se pudo enviar el código al email";
-                        new ExceptionHelper(e, "SendCode");
-                    }
-                }
-                else
-                {
-                    messageReply = "No se puede enviar código al email porque este campo esta vacío elija opción teléfono";
-                }
-            }
-
             return Json(new { messageReply, isSend }, JsonRequestBehavior.AllowGet);
+
         }
 
         /// <summary>
@@ -441,76 +429,14 @@ namespace PasswordChange.Controllers
 
             };
         }
-
-        public JsonResult ConsultarApiPokemon()
-        {
-            string strRetorno = string.Empty;
-            try
-            {
-                string strURLCompleta = "https://pokeapi.co/api/v2/berry/2/";
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create(strURLCompleta);
-                httpWebRequest.ContentType = "application/json";
-
-                httpWebRequest.Method = "GET";
-                httpWebRequest.ContentLength = 0;
-
-                var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-                {
-                    strRetorno = streamReader.ReadToEnd();
-                }
-
-                List<User> lstuser = new List<User>
-                {
-                    new User{ id = 1, email="proveedor.lmercado@uniminuto.edu",nDocument="1065007826",mobile="3007320726",alternativeEmail="ldmo.07@hotmail.com" },
-                    new User{ id = 2, email="proveedor.rdmartinez@uniminuto.edu",nDocument="1065008827",mobile="3135785934",alternativeEmail="hbt@gmail.com" },
-                    new User{ id = 3, email="proveedor.pzapata@uniminuto.edu",nDocument="10676890768",mobile="3205678901",alternativeEmail="hzapata@outlook.com" }
-                };
-
-                var filtro = lstuser.Where(x => x.id == 1).Select(x => new
-                {
-                    x.id,
-                    x.mobile,
-                    x.email,
-                    x.alternativeEmail
-                }).First();
-
-                string jsonPatientList = JsonConvert.SerializeObject(lstuser);
-
-                List<User> lst = new JavaScriptSerializer().Deserialize<List<User>>(jsonPatientList);
-
-                foreach (var item in lst)
-                {
-                    string id2 = item.id.ToString();
-                    string email2 = item.email;
-                    string nDocument2 = item.nDocument;
-                    string mobile2 = item.mobile;
-                }
-
-                string obj = "{\"id\":\"7\",\"email\":\"proveedor.lmercado@uniminuto.edu\",\"nDocument\":1065007826,\"mobile\":\"3007320726\"}";
-                // RootObject m = JsonConvert.DeserializeObject<RootObject>(tuString);
-                User data = new JavaScriptSerializer().Deserialize<User>(obj);
-                string id = data.id.ToString();
-                string email = data.email;
-                string nDocument = data.nDocument;
-                string mobile = data.mobile;
-
-
-
-                return Json(strRetorno, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-        }
+             
 
         /// <summary>
         /// Method that sends text messages to phones using MasivApi appi
         /// </summary>
         /// <param name="mobile">mobile number</param>
         /// <returns>int status response</returns>
-        public int SendMsmMasivApi(string mobile /*= "573217115109"*/, string codGenerate/*="8978"*/)
+        public int SendMsmMasivApi(string mobile, string codGenerate)
         {
             string strRetorno = string.Empty;
             //string message = "El Codigo de verificacion para cambio de credenciales es => " + codGenerate;
@@ -560,8 +486,6 @@ namespace PasswordChange.Controllers
                 {
                     strRetorno = streamReader.ReadToEnd();
                 }
-
-
 
                 //we validate if the message was sent or if any failure occurred
                 if (strRetorno.Contains("<statuscode>0</statuscode>") &&
@@ -748,7 +672,6 @@ namespace PasswordChange.Controllers
 
         }
 
-
         /// <summary>
         /// validates if the user entered exists
         /// </summary>
@@ -760,40 +683,13 @@ namespace PasswordChange.Controllers
 
             int existe = 0;
             string messageReply = "";
-
             string strRetorno = string.Empty;
 
-            //////
-            /// datos de prueba 
-
-            ///
-
-            //User filtro = new User()
-            //{
-            //    apellido = "ARRIETA",
-            //    nombre = "DUBAN ANDRES",
-            //    nDocument = "1001203956",
-            //    mobile = "3144224272",
-            //    email = email,
-            //    alternativeEmail = "darrietaquinchia@gmail.com",
-            //    id = 744553,
-            //    descripcion = "ESTUDIANTE",
-            //};
-            //existe = 1;
             User filtro = new User();
             Session["DataUser"] = filtro;
-
             Session["IsValidUser"] = true;
-            //I save the account type in a session variable 
             Session["typeAccount"] = "ESTUDIANTE";
 
-
-
-            //return Json(new
-            //{
-            //    existe,
-            //    messageReply                
-            //}, JsonRequestBehavior.AllowGet);
 
             try
             {
@@ -830,12 +726,7 @@ namespace PasswordChange.Controllers
                 //I unrealize the user's information to know what role he/she has  
                 UserJson data = new JavaScriptSerializer().Deserialize<UserJson>(strRetorno);
 
-                //if (!data.Mail.Equals(email))
-                //{
-                //    messageReply = "No se Encontro Este Correo En El Sistema";
-                //    return Json(new { existe, messageReply, filtro }, JsonRequestBehavior.AllowGet);
-                //}
-
+           
                 if (!data.Pager.Equals(cedula))
                 {
                     messageReply = "No se encontró este número de documento en el sistema";
@@ -849,12 +740,12 @@ namespace PasswordChange.Controllers
                     //we add validation to see if we are using the api pager or the form's cedula
                     if (!string.IsNullOrEmpty(data.Pager))
                     {
-                        UserDocente = ConsultarApiBoomi(data.Pager, strRetorno/*email*/);
+                        UserDocente = ConsultarApiBoomi(data.Pager, strRetorno);
                         //UserDocente = ConsultarApiBoomiTest(data.Pager);
                     }
                     else
                     {
-                        UserDocente = ConsultarApiBoomi(cedula, strRetorno/*email*/);
+                        UserDocente = ConsultarApiBoomi(cedula, strRetorno);
                         //UserDocente = ConsultarApiBoomiTest(cedula);
                     }
 
@@ -865,7 +756,7 @@ namespace PasswordChange.Controllers
                         filtro.nombre = UserDocente.Nombre;
                         filtro.nDocument = UserDocente.Cedula;
                         filtro.mobile = UserDocente.Celular;
-                        filtro.email = UserDocente.Email;
+                        filtro.email = email;
                         filtro.alternativeEmail = UserDocente.Email;
                         filtro.id = int.Parse(UserDocente.Uid_Usuario);
                         filtro.descripcion = data.Descripcion;
@@ -925,11 +816,9 @@ namespace PasswordChange.Controllers
                     filtro.nombre = data.FirstName;
                     filtro.apellido = data.LastName;
                     filtro.nDocument = data.Pager;
-                    //filtro.email = data.Mail;
                     filtro.email = data.msds_cloudextensionattribute2;
                     filtro.alternativeEmail = data.Mail;
                     filtro.descripcion = data.Descripcion;
-                    //filtro.mobile = data.TelephoneNumber;
                     filtro.mobile = data.HomePhone;
                     existe = 1;
                     Session["IsValidUser"] = true;
@@ -960,7 +849,7 @@ namespace PasswordChange.Controllers
         /// <param name="email">Email of user</param>
         /// <param name="password">new Password</param>
         /// <returns></returns>
-        public JsonResult IsUpdatePassword(/*string email,*/ string password/*, string nDocument*/)
+        public JsonResult IsUpdatePassword(string password)
         {
             User user = (User)Session["DataUser"];
             int isUpdate = 0;
@@ -1031,7 +920,6 @@ namespace PasswordChange.Controllers
             }
             catch (Exception e)
             {
-                //new ExceptionHelper(e, "Decodificando en decryptBase64");
                 return string.Empty;
             }
 

@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using Twilio;
 using Twilio.Rest.Api.V2010.Account;
 
 namespace Helpers.Implementations
 {
-   public class SendSmsWhitTwilio
+    public class SendSmsWhitTwilio
     {
         public SendSmsWhitTwilio()
         {
